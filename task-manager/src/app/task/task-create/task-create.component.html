@@ -1,0 +1,40 @@
+<!-- src/app/task/task-create/task-create.component.html -->
+<div class="task-form">
+    
+    <h1>{{ isEditing ? taskForm.get('name')?.value || "Edit Task" : 'Create New Task' }}</h1>
+
+    <form [formGroup]="taskForm">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Task Name</mat-label>
+        <input matInput formControlName="name" placeholder="Enter task name" />
+        <mat-error *ngIf="formControls['name'].hasError('required')">Task name is required</mat-error>
+        <mat-error *ngIf="formControls['name'].hasError('minlength')">Task name must be at least 3 characters long</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Task Description</mat-label>
+        <input matInput formControlName="description" placeholder="Enter task description" />
+        <mat-error *ngIf="formControls['description'].hasError('required')">Description is required</mat-error>
+        <mat-error *ngIf="formControls['description'].hasError('minlength')">Description must be at least 5 characters long</mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Task Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option value="Pending">Pending</mat-option>
+          <mat-option value="In Progress">In Progress</mat-option>
+          <mat-option value="Completed">Completed</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <div class="form-actions">
+        <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="taskForm.invalid">
+          {{ isEditing ? mode !== modes.VIEW ?'Update Task':'Edit Task'
+           : 'Create Task' }}
+        </button>
+        <button mat-button [routerLink]="['']">Back to Listing</button>
+      </div>
+    </form>
+
+  </div>
+  

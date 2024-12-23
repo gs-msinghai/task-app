@@ -1,0 +1,86 @@
+<!-- src/app/task/task-list/task-list.component.html -->
+<div class="task-list">
+    <!-- Filter Section -->
+    <div class="filter-container">
+      <mat-form-field appearance="fill">
+        <mat-label>Search Tasks</mat-label>
+        <input matInput [(ngModel)]="searchText" (input)="applyFilters()" placeholder="Search by name or description" />
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Status Filter</mat-label>
+        <mat-select [(ngModel)]="selectedStatus" (selectionChange)="applyFilters()">
+          <mat-option value="">All Statuses</mat-option>
+          <mat-option value="Pending">Pending</mat-option>
+          <mat-option value="In Progress">In Progress</mat-option>
+          <mat-option value="Completed">Completed</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  
+    <!-- Delete Selected Tasks Button -->
+     <div style="margin-bottom: 10px;">
+        <button class="delete-btn" *ngIf="selectedTasks.size !== 0"  mat-flat-button color="accent" (click)="deleteSelectedTasks()" [disabled]="selectedTasks.size === 0">
+            Delete Selected ({{ selectedTasks.size }})
+          </button>
+          <button class="add-btn" mat-flat-button color="primary" [routerLink]="['/tasks/new']" (click)="deleteSelectedTasks()">
+            Add task 
+          </button>
+
+     </div>
+   
+  
+    <!-- Task List (Card View) -->
+     <ng-container *ngIf="filteredTasks.length;else noTaskScreen" >
+        <div *ngFor="let task of filteredTasks">
+            <mat-card class="task-card" >
+              <!-- Task Header with Title, Subtitle, and Hamburger Icon -->
+              <mat-card-header >
+                <div class="task-header-left" (click)="toggleSelection(task.id)">
+                  <!-- Icon for Task Selection -->
+                  <mat-icon *ngIf="selectedTasks.has(task.id)" class="task-selection-icon"  (click)="toggleSelection(task.id)">
+                    {{ 'check_circle' }}
+                  </mat-icon>
+                  <div class="task-header-text">
+                    <mat-card-title>{{ task.name }}</mat-card-title>
+                    <mat-card-subtitle>{{ task.description }}</mat-card-subtitle>
+                  </div>
+                </div>
+        
+                <!-- Hamburger Icon Button for Task Actions -->
+                <button mat-icon-button [matMenuTriggerFor]="menu" class="hamburger-icon">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="viewTask(task.id)">
+                    <mat-icon>visibility</mat-icon> View
+                  </button>
+                  <button mat-menu-item (click)="editTask(task.id)">
+                    <mat-icon>edit</mat-icon> Edit
+                  </button>
+                  <button mat-menu-item (click)="deleteTask(task.id)">
+                    <mat-icon>delete</mat-icon> Delete
+                  </button>
+                </mat-menu>
+              </mat-card-header>
+        
+              <!-- Task Content -->
+              <!-- <mat-card-content class="task-card-content">
+                <div class="task-status" [ngClass]="getStatusClass(task.status)">
+                  {{ task.status }}
+                </div>
+              </mat-card-content> -->
+              <mat-card-footer >
+                    <div class="task-status" [ngClass]="getStatusClass(task.status)">  {{ task.status }}</div>
+                </mat-card-footer>
+            </mat-card>
+          </div>
+     </ng-container>
+     <ng-template #noTaskScreen>
+        <div class="no-tasks">
+          <p>No tasks found</p>
+        </div>
+     </ng-template>
+    
+  </div>
+  
