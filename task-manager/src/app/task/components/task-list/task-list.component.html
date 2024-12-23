@@ -23,7 +23,7 @@
         <button class="delete-btn" *ngIf="selectedTasks.size !== 0"  mat-flat-button color="accent" (click)="deleteSelectedTasks()" [disabled]="selectedTasks.size === 0">
             Delete Selected ({{ selectedTasks.size }})
           </button>
-          <button class="add-btn" mat-flat-button color="primary" [routerLink]="['/tasks/new']" (click)="deleteSelectedTasks()">
+          <button class="add-btn" mat-flat-button color="primary" [routerLink]="['/tasks/new']" >
             Add task 
           </button>
 

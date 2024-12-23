@@ -3,7 +3,9 @@ import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../model/task.model';
 import { Router } from '@angular/router';
-import { filter, pipe, takeUntil } from 'rxjs';
+import { filter, Observable, pipe, takeUntil } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from '../../../common/dialog/confirm-dialog-component/confirm-dialog-component.component';
 
 @Component({
   selector: 'app-task-list',
@@ -19,7 +21,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
   searchText: string = '';  // To bind with search input field
   selectedStatus: string = '';  // To filter by task status
 
-  constructor(private taskService: TaskService, private router: Router) {}
+  constructor(private taskService: TaskService, private router: Router, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     // Fetch tasks from the service
@@ -42,20 +44,40 @@ export class TaskListComponent implements OnInit, OnDestroy {
   // Delete selected tasks
   deleteSelectedTasks(): void {
     if (this.selectedTasks.size > 0) {
-      // Convert Set to Array and delete tasks from service
-      this.taskService.deleteTasks(Array.from(this.selectedTasks));
-      this.selectedTasks.clear();  // Clear selected tasks after deletion
-      this.applyFilters();  // Reapply filters to update the task list
+      this.openConfirmDialog('Are you sure you want to delete the selected tasks?')
+        .subscribe(result => {
+          if (result) {
+            // Convert Set to Array and delete tasks from service
+            this.taskService.deleteTasks(Array.from(this.selectedTasks));
+            this.selectedTasks.clear();  // Clear selected tasks after deletion
+            this.applyFilters();  // Reapply filters to update the task list
+          }
+        });
     }
   }
 
   // Delete a single task
   deleteTask(taskId: number): void {
-    this.selectedTasks.clear(); 
-    this.taskService.deleteTask(taskId);
-    this.applyFilters();  // Reapply filters to update the task list
+    this.openConfirmDialog('Are you sure you want to delete this task?')
+      .subscribe(result => {
+        if (result) {
+          this.selectedTasks.clear();
+          this.taskService.deleteTask(taskId);
+          this.applyFilters();
+        }
+      });
   }
 
+
+  // General method to open the confirmation dialog
+  openConfirmDialog(message: string): Observable<boolean> {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: { message }
+    });
+    return dialogRef.afterClosed(); // Return the result as Observable<boolean>
+  }
+
+  
   // Filter tasks based on search text and selected status
   applyFilters(): void {
     this.filteredTasks = this.tasks.filter(task => {

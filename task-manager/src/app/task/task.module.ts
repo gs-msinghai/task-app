@@ -7,11 +7,14 @@ import { TaskRoutingModule } from './task-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms'; // Import FormsModule for ngModel
 import { MaterialModule } from '../common/material.module'; // Import MaterialModule
+import { CanDeactivateGuard } from './candeactivate.guard';
+import { ConfirmDialogComponent } from '../common/dialog/confirm-dialog-component/confirm-dialog-component.component';
 
 @NgModule({
   declarations: [
     TaskListComponent,
-    TaskCreateComponent
+    TaskCreateComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     CommonModule,
@@ -19,6 +22,8 @@ import { MaterialModule } from '../common/material.module'; // Import MaterialMo
     ReactiveFormsModule, // Add ReactiveFormsModule for form handling
     FormsModule, // Add FormsModule for ngModel support
     MaterialModule
-  ]
+  ],
+  providers: [CanDeactivateGuard],
+
 })
 export class TaskModule {}

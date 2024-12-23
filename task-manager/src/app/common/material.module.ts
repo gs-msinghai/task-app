@@ -9,7 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
+import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
   exports: [
         MatButtonModule,
@@ -20,6 +20,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         MatIconModule,
         MatCheckboxModule,
         MatMenuModule,
+        MatDialogModule,
+  ],
+  declarations: [
+    
   ]
 })
 export class MaterialModule {}
