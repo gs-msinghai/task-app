@@ -2,8 +2,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TaskService } from '../task.service';
-import { Mode, Task } from '../task.model';
+import { TaskService } from '../../services/task.service';
+import { Mode, Task } from '../../model/task.model';
 
 @Component({
   selector: 'app-task-create',

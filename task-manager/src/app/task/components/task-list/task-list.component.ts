@@ -1,7 +1,7 @@
 // src/app/task/task-list/task-list.component.ts
 import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
-import { TaskService } from '../task.service';
-import { Task } from '../task.model';
+import { TaskService } from '../../services/task.service';
+import { Task } from '../../model/task.model';
 import { Router } from '@angular/router';
 import { filter, pipe, takeUntil } from 'rxjs';
 
